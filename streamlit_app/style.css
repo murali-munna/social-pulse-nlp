@@ -1,0 +1,52 @@
+
+/* to remove title paddings */
+div.css-18e3th9 {
+    padding-top: 0rem;
+    /* padding-bottom: 0rem;
+    padding-left: 2rem;
+    padding-right: 2rem; */
+}
+/* div.css-1d391kg {
+    padding-top: 0rem;
+    padding-right: 0rem;
+    padding-bottom: 0rem;
+    padding-left: 0rem;
+} */
+
+/* reducing width of sidebar */
+[data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+    width: 300px;
+}
+[data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+    width: 300px;
+    margin-left: -300px;
+}
+
+/* container paddings  */
+/* div[data-testid="stHorizontalBlock"] {
+    padding-top: 2rem;
+    padding-bottom: 0rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+} */
+
+/* container border */
+/* div.css-fplge5.e1tzin5v2 {
+    border: 1px solid #DCDCDC;
+    border-radius: 10px;
+}
+div.css-1yycg8b.e1tzin5v2 {
+    border: 1px solid #DCDCDC;
+    border-radius: 10px;
+} */
+
+div.streamlit-expanderHeader {
+    font-size: large;
+    font-weight: bold;
+}
+
+/* border around markdown */
+/* div.element-container.css-1fafymm.e1tzin5v3 {
+    border: 1px solid #DCDCDC;
+    border-radius: 10px;
+} */
