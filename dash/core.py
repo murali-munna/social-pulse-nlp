@@ -92,6 +92,7 @@ def preprocess(df):
     for emo in emotions:
         df[emo] = df['emotion'] == emo
         df[emo] = df[emo].astype(int)
+    
     # df = df.groupby(['location'], as_index=False).sum()
     df['lat'] = df.apply(lambda row: getLoc(row['location'], 0), axis=1)
     df['lon'] = df.apply(lambda row: getLoc(row['location'], 1), axis=1)
@@ -104,8 +105,9 @@ def display_geo_analysis():
     df, emotions = preprocess(df)
     df = df[['lat', 'lon', 'emotion']]
     emotion = st.selectbox(
-        "select emotion:", emotions)
-    df = df[df['emotion'] == emotion]
+        "select emotion:", ['all', *emotions])
+    if emotion != 'all':
+        df = df[df['emotion'] == emotion]
     try:
         ALL_LAYERS = {
             "emotions": pdk.Layer(
