@@ -5,10 +5,10 @@ import streamlit as st
 import streamlit_wordcloud as wordcloud
 from streamlit_option_menu import option_menu
 import streamlit.components.v1 as html
-from common import set_page_container_style
+# from common import set_page_container_style
 import matplotlib.pyplot as plt
 import plotly.express as px
-import altair as alt
+# import altair as alt
 # from vega_datasets import data
 import pickle
 import re
@@ -21,6 +21,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import CountVectorizer
 from imageio import imread
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator, get_single_color_func
+from urllib.error import URLError
+import pydeck as pdk
 
 
 def main():
@@ -41,6 +43,8 @@ def main():
     times = ['Last 1w', 'Last 1m', 'Last 6m', 'Last 1yr', 'Last 5yr']
     times_dict = {'Last 1w':1, 'Last 1m':2, 'Last 6m':3, 'Last 1yr':4, 'Last 5yr':5}
     weightages = ['# Posts', '# Votes']
+    sent_feelings = ['Negative', 'Neutral', 'Positive']
+    emo_feelings = ['joy', 'sadness', 'surprise', 'anger', 'fear']
     colors = ['#e86252', '#ddb967', '#43aa8b', '#086788']
     
     # load data once
@@ -266,6 +270,118 @@ def main():
         
         return fig
     
+    # @st.experimental_memo
+    def display_geo_analysis(df, brand, time_period, weight, detection, feeling):
+        
+        agg_col = 'posts' if weight=='# Posts' else 'votes'
+        detect_col = 'sentiment' if detection=='Sentiment' else 'emotion'
+        data = df[(df['brand']==brand) & (df['stream']=='Twitter') & (df['time_period']<=times_dict[time_period])]
+        
+        # fig2 = px.pie(pd.DataFrame({'sentiment':['Positive', 'Neutral', 'Negative'], 'score':[30, 60, 10]}), 
+        #               values='score', names='sentiment', hole=0.4) #, title=f'<b>Sentiment Distrbution<b>'
+        
+        def getLoc(locStr, i):
+            if not isinstance(locStr, str):
+                return None
+            r = locStr.split(',')
+            if len(r) < 2:
+                return None
+            return float(r[i])
+        
+        data['lat'] = data.apply(lambda row: getLoc(row['location'], 0), axis=1)
+        data['lon'] = data.apply(lambda row: getLoc(row['location'], 1), axis=1)
+        
+        # data['lat_lon'] = data['lat'].astype(str) + '_' + data['lon'].astype(str)
+        # data = data.groupby(['lat_lon', detect_col])[agg_col].sum().reset_index()
+        # data1 = data.groupby('lat_lon')[agg_col].sum().reset_index()
+        # data = pd.merge(data, data1, on='lat_lon')
+        # data[agg_col] = data[agg_col+'_x']/data[agg_col+'_y'] * 100
+        # data['lat'] = data['lat_lon'].str.split('_', expand=True)[0].astype(float)
+        # data['lon'] = data['lat_lon'].str.split('_', expand=True)[1].astype(float)
+        # data = data[data[detect_col]==feeling][['lat', 'lon', agg_col]]
+        
+        data = data[data[detect_col]==feeling][['lat', 'lon', detect_col, agg_col]]
+        
+        if agg_col=='votes':
+            # print(data)
+            new_data=data.reindex(data.index.repeat(data[agg_col]))
+            new_data['position']=new_data.groupby(level=0).cumcount()+1
+            # print(new_data)
+        else:
+            # print(data)
+            new_data = data
+        
+        # print(data[agg_col].sum())
+        # print(new_data)
+        # print()
+        
+        try:
+            ALL_LAYERS = {
+                'Feeling': pdk.Layer(
+                    "HexagonLayer",
+                    data=new_data,
+                    get_position=["lon", "lat"],
+                    # get_elevation=agg_col,
+                    radius=80000,
+                    elevation_scale=4,
+                    elevation_range=[300000, 600000],
+                    extruded=True,
+                ),
+
+            }
+            # st.sidebar.markdown('### Map Layers')
+            tooltip = {
+                "html": "<b>{lat},{lon}</b>",
+                "style": {"background": "grey", "color": "white", "font-family": '"Helvetica Neue", Arial', "z-index": "10000"},
+            }
+            selected_layers = [
+                layer for layer_name, layer in ALL_LAYERS.items()
+                # if st.sidebar.checkbox(layer_name, True)
+                ]  # all selected
+            if selected_layers:
+                st.pydeck_chart(pdk.Deck(
+                    map_style="mapbox://styles/mapbox/light-v9",
+                    initial_view_state={"latitude": 37.4214,
+                                        "longitude": -100, "zoom": 2.2, "pitch": 50},
+                    tooltip=tooltip,
+                    layers=selected_layers,
+                ))
+            else:
+                st.error("Please choose at least one layer above.")
+        except URLError as e:
+            st.error("""**This demo requires internet access.**Connection error: %s""" % e.reason)
+        
+        # view = pdk.data_utils.compute_view(data[["lon", "lat"]])
+        # view.pitch = 75
+        # view.bearing = 60
+        
+        # column_layer = pdk.Layer(
+        #     "ColumnLayer",
+        #     data=data,
+        #     get_position=["lng", "lat"],
+        #     get_elevation=agg_col,
+        #     elevation_scale=100,
+        #     radius=50,
+        #     # get_fill_color=["mrt_distance * 10", "mrt_distance", "mrt_distance * 10", 140],
+        #     pickable=True,
+        #     auto_highlight=True,
+        # )
+
+        # tooltip = {
+        #     "html": "<b>{mrt_distance}</b> meters away from an MRT station, costs <b>{price_per_unit_area}</b> NTD/sqm",
+        #     "style": {"background": "grey", "color": "white", "font-family": '"Helvetica Neue", Arial', "z-index": "10000"},
+        # }
+
+        # r = pdk.Deck(
+        #     column_layer,
+        #     initial_view_state={"latitude": 37.4214, "longitude": -100, "zoom": 2, "pitch": 50},
+        #     # tooltip=tooltip,
+        #     map_provider="mapbox",
+        #     map_style="mapbox://styles/mapbox/light-v9",
+        # )
+        
+        # st.pydeck_chart(r)
+    
     
     df, kw_yake, kw_kbnc = load_data()
     
@@ -309,8 +425,8 @@ def main():
 
 
     with st.sidebar:
-        choose_menu = option_menu("App Gallery", ["Overview", "Keyword Analytics", "Geo Analytics", "About"],
-                            icons=['twitter', 'chat-left-text-fill', 'geo-alt-fill', 'info-circle-fill'],
+        choose_menu = option_menu("App Gallery", ["Overview", "Keyword Analytics", "Geo Analytics", "Data Deepdive", "About"],
+                            icons=['twitter', 'chat-left-text-fill', 'geo-alt-fill', 'table', 'info-circle-fill'],
                             menu_icon="app-indicator", default_index=0,
         #                      styles={
         #     "container": {"padding": "5!important", "background-color": "#fafafa"},
@@ -388,7 +504,26 @@ def main():
         with row1_3:
             topic_type = st.radio(f'Topic Type', topic_types, help='Choose the the type of topic to analyze')
     
+    
+    if choose_menu=='Geo Analytics':
         
+        row1_1, _, row1_3, row1_4, row1_5, row1_6 = st.columns([1, 0.1, 1, 1, 1, 1])
+        with row1_1:
+            brand = st.selectbox(f'Select Brand', brands, help='Choose the brand that you want to analyze. The current prototype contains 10+ brands')
+        # with row1_2:
+        #     stream = st.radio(f'Select Social Stream', streams, help='Choose the social media')
+        with row1_3:
+            time_period = st.select_slider(f'Select Time Period', times, value='Last 1m', help='Choose the time period')
+        with row1_4:
+            weight = st.radio(f'Weightage Scheme', weightages, help='Choose if you want to weight the values by upvotes')
+        with row1_5:
+            detection = st.radio(f'Select Detection', ['Sentiment', 'Emotion'], help='Choose the type of detection')
+        with row1_6:
+            feeling = st.selectbox(f'Select Brand', sent_feelings if detection=='Sentiment' else emo_feelings, help='Choose the feeling')
+
+        display_geo_analysis(df, brand, time_period, weight, detection, feeling)
+     
+     
     if choose_menu=='About':
         # st.header('Description')
         with st.expander("Description", expanded=True):
