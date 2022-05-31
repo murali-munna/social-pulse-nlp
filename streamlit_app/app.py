@@ -39,7 +39,7 @@ def main():
     
     brands = ['Iphone', 'Samsung', 'Robinhood', 'WhatsApp', 'Netflix', 'Disney', 'McDonalds', 'Ferrari']
     streams = ['Twitter', 'Reddit']
-    topic_types = ['Hastags', 'Keywords']
+    topic_types = ['Hastags', 'Broad Topics', 'Keywords']
     times = ['Last 1w', 'Last 1m', 'Last 6m', 'Last 1yr', 'Last 5yr']
     times_dict = {'Last 1w':1, 'Last 1m':2, 'Last 6m':3, 'Last 1yr':4, 'Last 5yr':5}
     weightages = ['# Posts', '# Votes']
@@ -271,7 +271,7 @@ def main():
         return fig
     
     # @st.experimental_memo
-    def display_geo_analysis(df, brand, time_period, weight, detection, feeling):
+    def prepare_geo_data(df, brand, time_period, weight, detection, feeling):
         
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         detect_col = 'sentiment' if detection=='Sentiment' else 'emotion'
@@ -311,9 +311,12 @@ def main():
             # print(data)
             new_data = data
         
-        # print(data[agg_col].sum())
-        # print(new_data)
-        # print()
+        return new_data
+    
+    # @st.experimental_memo(suppress_st_warning=True)
+    def display_geo_analysis(df, brand, time_period, weight, detection, feeling):
+        
+        new_data = prepare_geo_data(df, brand, time_period, weight, detection, feeling)
         
         try:
             ALL_LAYERS = {
@@ -381,6 +384,9 @@ def main():
         # )
         
         # st.pydeck_chart(r)
+    
+    def prepare_topic_data(df):
+        return None
     
     
     df, kw_yake, kw_kbnc = load_data()
@@ -495,15 +501,35 @@ def main():
                 st.plotly_chart(plot_emotion(df, brand, stream, time_period, weight), use_container_width=True)
     
     if choose_menu=='Keyword Analytics':
+
         
-        row1_1, row1_2, row1_3 = st.columns(3)
+        row1_1, _, row1_2, row1_3, _, row1_4, row1_5 = st.columns([1, 0.1, 1, 1, 0.1, 1, 1])
         with row1_1:
-            brand = st.selectbox(f'Brand', brands, help='Choose the brand that you want to analyze. The current prototype contains 10+ brands')
+            brand = st.selectbox(f'Select Brand', brands, help='Choose the brand that you want to analyze. The current prototype contains 10+ brands')
         with row1_2:
-            stream = st.radio(f'Social Stream', streams, help='Choose the social media')
+            stream = st.radio(f'Select Social Stream', streams, help='Choose the social media')
         with row1_3:
-            topic_type = st.radio(f'Topic Type', topic_types, help='Choose the the type of topic to analyze')
-    
+            topic_type = st.selectbox(f'Select Topic Type', topic_types, help='Choose the the type/level of topic to analyze')
+        with row1_4:
+            time_period = st.select_slider(f'Select Time Period', times, value='Last 1m', help='Choose the time period')
+        with row1_5:
+            weight = st.radio(f'Weightage Scheme', weightages, help='Choose if you want to weight the values by upvotes')
+
+        row2_1, row2_2, row2_3 = st.columns([2,3,3])
+        with row2_1:
+            with st.expander("Topic Frequency", expanded=True):
+                # st.plotly_chart(plot_timeline(df, brand, stream, time_period, weight), use_container_width=True)
+                st.write('XX')
+            
+        with row2_2:
+            with st.expander("Topic Sentiment", expanded=True):
+                # st.plotly_chart(plot_sentiment(df, brand, stream, time_period, weight), use_container_width=True)
+                st.write('XX')
+        
+        with row2_3:
+            with st.expander("Topic Emotion", expanded=True):
+                # st.plotly_chart(plot_sentiment(df, brand, stream, time_period, weight), use_container_width=True)
+                st.write('XX')
     
     if choose_menu=='Geo Analytics':
         
