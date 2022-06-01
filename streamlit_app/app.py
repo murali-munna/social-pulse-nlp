@@ -42,9 +42,9 @@ def main():
     
     path = 'streamlit_app/data/'
     
-    brands = ['Iphone', 'Samsung', 'Robinhood', 'WhatsApp', 'Netflix', 'Disney', 'McDonalds', 'Ferrari']
+    brands = ['Iphone', 'Samsung', 'GooglePixel', 'Dell', 'Microsoft', 'Facebook', 'Robinhood', 'Tesla', 'Ferrari', 'WhatsApp', 'Netflix', 'Disney', 'McDonalds']
     streams = ['Reddit','Twitter']
-    topic_types = ['Hashtags', 'Broad Topics']
+    topic_types = ['Broad Topics', 'Hashtags']
     times = ['Last 1w', 'Last 1m', 'Last 6m', 'Last 1yr', 'Last 5yr']
     times_dict = {'Last 1w':1, 'Last 1m':2, 'Last 6m':3, 'Last 1yr':4, 'Last 5yr':5}
     weightages = ['# Posts', '# Votes']
@@ -62,26 +62,27 @@ def main():
     def load_data():
         
         df = pd.read_pickle(os.path.join(path,'df.pkl'))
-        df['date_time'] = pd.to_datetime(df['time_of_creation'])
-        df['date'] = pd.to_datetime(df['time_of_creation']).dt.date
-        df['days_diff'] = (pd.Timestamp.now() - df['date_time']).dt.days
-        df['time_period'] = np.where(df['days_diff']<=7, 1,
-                             np.where(df['days_diff']<=31, 2,
-                             np.where(df['days_diff']<=180, 3,
-                             np.where(df['days_diff']<=365, 4,
-                             np.where(df['days_diff']<=365*5, 5, 6)))))
-        df['posts'] = 1
-        df['votes'] = df['ups'].fillna(df['favorite_count'])
-        df['sentiment'] = df['sentiment_prediction'].replace({1:'Positive', 0:'Neutral', -1:'Negative'})
-        df['sentiment'] = pd.Categorical(df['sentiment'], ["Negative", "Neutral", "Positive"])
-        df = df.rename({'emotion prediction': 'emotion'}, axis=1)
-        df['emotion'] = pd.Categorical(df['emotion'], ['joy', 'sadness', 'surprise', 'anger', 'fear'])
+        # df['date_time'] = pd.to_datetime(df['time_of_creation'])
+        # df['date'] = pd.to_datetime(df['time_of_creation']).dt.date
+        # df['days_diff'] = (pd.Timestamp.now() - df['date_time']).dt.days
+        # df['time_period'] = np.where(df['days_diff']<=7, 1,
+        #                      np.where(df['days_diff']<=31, 2,
+        #                      np.where(df['days_diff']<=180, 3,
+        #                      np.where(df['days_diff']<=365, 4,
+        #                      np.where(df['days_diff']<=365*5, 5, 6)))))
+        # df['posts'] = 1
+        # df['votes'] = df['ups'].fillna(df['favorite_count'])
+        # df['sentiment'] = df['sentiment_prediction'].replace({1:'Positive', 0:'Neutral', -1:'Negative'})
+        # df['sentiment'] = pd.Categorical(df['sentiment'], ["Negative", "Neutral", "Positive"])
+        # df = df.rename({'emotion prediction': 'emotion'}, axis=1)
+        # df['emotion'] = pd.Categorical(df['emotion'], ['joy', 'sadness', 'surprise', 'anger', 'fear'])
         
+        kw_ht = pickle.load(open(os.path.join(path,'kw_ht.pkl'), 'rb'))
         kw_yake = pickle.load(open(os.path.join(path,'kw_yake.pkl'), 'rb'))
         # noun_chunks = pickle.load(open(os.path.join(path,'noun_chunks.pkl'), 'rb'))
         kw_kbnc = pickle.load(open(os.path.join(path,'kw_kbnc.pkl'), 'rb'))
 
-        return df, kw_yake, kw_kbnc
+        return df, kw_ht, kw_yake, kw_kbnc
     
     @st.experimental_memo
     def get_filters(df):
@@ -136,7 +137,7 @@ def main():
         fig.update_layout(
             # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
             showlegend=False,
-            margin_l=25, margin_r=25, margin_t=25, margin_b=25, 
+            margin_l=55, margin_r=55, margin_t=55, margin_b=55, 
             # yaxis_visible=False, yaxis_showticklabels=False
         )
         
@@ -279,7 +280,7 @@ def main():
         fig.update_layout(
             # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
             showlegend=False,
-            margin_l=25, margin_r=25, margin_t=25, margin_b=25, 
+            margin_l=45, margin_r=45, margin_t=45, margin_b=45, 
             # yaxis_visible=False, yaxis_showticklabels=False
         )
         
@@ -301,7 +302,8 @@ def main():
         topic_count = []
         for topic in topics:
             if topic_type=='Hashtags':
-                x = data['text'].str.lower().str.contains(topic) * data[agg_col].astype(int)
+                # x = data['text'].str.lower().str.contains(topic) * data[agg_col].astype(int)
+                x = data['text'].apply(lambda li: topic in li) * data[agg_col].astype(int)
             else:
                 x = data['text_clean_yake'].str.contains(topic) * data[agg_col].astype(int)
             topic_count.append([
@@ -325,7 +327,7 @@ def main():
         
         return topic_df
     
-    # @st.experimental_memo
+    @st.experimental_memo
     def plot_topic_freq(df, brand, stream, topic_type, weight):
         
         topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)  
@@ -342,7 +344,7 @@ def main():
         
         return fig
         
-      
+    @st.experimental_memo
     def plot_topic_sentiment(df, brand, stream, topic_type, weight):
         
         topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)
@@ -365,7 +367,7 @@ def main():
         
         return fig
     
-    
+    @st.experimental_memo
     def plot_topic_emotion(df, brand, stream, topic_type, weight):
         
         topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)
@@ -393,8 +395,16 @@ def main():
         
         kw = kw_kbnc[brand][stream]
         
+        STOP_WORDS = stopwords.words('english')
+        kw_clean = []
+        for k in kw:
+            s = [w for w in k.split() if w not in STOP_WORDS]
+            kw_clean.append(' '.join(s))
+        # print(kw_clean)
+            
+            
         count_model = CountVectorizer(ngram_range=(1,1)) # default unigram model
-        X = count_model.fit_transform(kw)
+        X = count_model.fit_transform(kw_clean)
         # X[X > 0] = 1 # run this line if you don't want extra within-text cooccurence (see below)
         Xc = (X.T * X) # this is co-occurrence matrix in sparse csr format
         Xc.setdiag(0) # sometimes you want to fill same word cooccurence to 0
@@ -565,7 +575,7 @@ def main():
         postExtremeComments(topNeg, keywords, negColor, extreme='Negative')
     
     
-    df, kw_yake, kw_kbnc = load_data()
+    df, kw_ht, kw_yake, kw_kbnc = load_data()
     
     # ==================================================================================
     # ========== Streamlit App Code ====================================================
@@ -761,9 +771,13 @@ def main():
                 """     
                 -   **Twitter Data**: Scraped relevant hashtags using [Tweepy](https://www.tweepy.org/)
                 -   **Reddit Data**: Scraped relevant sub-reddits and search terms using [PRAW](https://praw.readthedocs.io/en/stable/)
-                -   **Sentiment Detection**:
-                -   **Emotion Detection**:
-                -   **Keyword Extraction**:
+                
+                
+                -   **Sentiment Detection**: 'Twitter and Reddit Sentimental analysis Dataset' modelled to detect Positive, Neutral and Negative classes. We used LinearSVC model with TF-IDF representations.
+                -   **Emotion Detection**: 'Emotions Dataset' modelled to detect five emotions: joy, sadness, surprise, anger, fear. We used LinearSVC model with TF-IDF representations.
+                -   **Keyword Extraction**: 
+                    - YAKE: Unsupervised keyword extraction method based on text statistical features
+                    - KeyBERT: Keyword extraction technique based on similarity between phrases (noun chunks) and document embeddings
                 """
         )
         
@@ -778,7 +792,12 @@ def main():
         with st.expander("Team", expanded=True):
             st.write(
                 """     
-                -   Murali Dandu, ...
+                - Murali Dandu
+                - Christopher Light
+                - Hao Qu
+                - Liyang Ru
+                - Pai Tong
+                - Yen-Ju Tseng
                 """
         )
     
