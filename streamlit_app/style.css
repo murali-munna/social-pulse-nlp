@@ -50,3 +50,8 @@ div.streamlit-expanderHeader {
     border: 1px solid #DCDCDC;
     border-radius: 10px;
 } */
+
+hr { 
+    margin-top: 5px; 
+    margin-bottom: 5px 
+}

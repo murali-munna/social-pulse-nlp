@@ -1,13 +1,14 @@
+htbuilder==0.6.0
 imageio==2.19.3
 matplotlib==3.3.4
+networkx==2.8
 nltk==3.7
 numpy==1.20.0
 pandas==1.4.2
 plotly==5.8.0
 pydeck==0.7.1
+pyvis==0.2.1
 scikit_learn==1.1.1
 streamlit==1.9.0
 streamlit_option_menu==0.3.2
-streamlit_wordcloud==0.1.0
 wordcloud==1.8.1
-

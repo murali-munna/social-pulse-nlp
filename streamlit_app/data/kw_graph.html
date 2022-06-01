@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 90%;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "12", "label": "12", "shape": "dot", "size": 20}, {"id": "iot", "label": "iot", "shape": "dot", "size": 20}, {"id": "iphone", "label": "iphone", "shape": "dot", "size": 75}, {"id": "smackdown", "label": "smackdown", "shape": "dot", "size": 20}, {"id": "the", "label": "the", "shape": "dot", "size": 40}, {"id": "14", "label": "14", "shape": "dot", "size": 15}, {"id": "display", "label": "display", "shape": "dot", "size": 15}, {"id": "production", "label": "production", "shape": "dot", "size": 15}, {"id": "accessibility", "label": "accessibility", "shape": "dot", "size": 15}, {"id": "apples", "label": "apples", "shape": "dot", "size": 15}, {"id": "features", "label": "features", "shape": "dot", "size": 15}, {"id": "new", "label": "new", "shape": "dot", "size": 35}, {"id": "algunos", "label": "algunos", "shape": "dot", "size": 30}, {"id": "beta", "label": "beta", "shape": "dot", "size": 30}, {"id": "de", "label": "de", "shape": "dot", "size": 30}, {"id": "ios", "label": "ios", "shape": "dot", "size": 50}, {"id": "la", "label": "la", "shape": "dot", "size": 30}, {"id": "se", "label": "se", "shape": "dot", "size": 30}, {"id": "sorprenden", "label": "sorprenden", "shape": "dot", "size": 30}, {"id": "and", "label": "and", "shape": "dot", "size": 35}, {"id": "app", "label": "app", "shape": "dot", "size": 20}, {"id": "hackable", "label": "hackable", "shape": "dot", "size": 15}, {"id": "ios1", "label": "ios1", "shape": "dot", "size": 15}, {"id": "macos", "label": "macos", "shape": "dot", "size": 20}, {"id": "photos", "label": "photos", "shape": "dot", "size": 20}, {"id": "trackable", "label": "trackable", "shape": "dot", "size": 15}, {"id": "android", "label": "android", "shape": "dot", "size": 40}, {"id": "best", "label": "best", "shape": "dot", "size": 20}, {"id": "flagship", "label": "flagship", "shape": "dot", "size": 20}, {"id": "ipad", "label": "ipad", "shape": "dot", "size": 20}, {"id": "okwint", "label": "okwint", "shape": "dot", "size": 20}, {"id": "pc", "label": "pc", "shape": "dot", "size": 20}, {"id": "phones", "label": "phones", "shape": "dot", "size": 20}, {"id": "any", "label": "any", "shape": "dot", "size": 10}, {"id": "issues", "label": "issues", "shape": "dot", "size": 10}, {"id": "safari", "label": "safari", "shape": "dot", "size": 10}, {"id": "apple", "label": "apple", "shape": "dot", "size": 5}, {"id": "not", "label": "not", "shape": "dot", "size": 15}, {"id": "backup", "label": "backup", "shape": "dot", "size": 10}, {"id": "icloud", "label": "icloud", "shape": "dot", "size": 10}, {"id": "login", "label": "login", "shape": "dot", "size": 10}, {"id": "breaking", "label": "breaking", "shape": "dot", "size": 15}, {"id": "ground", "label": "ground", "shape": "dot", "size": 15}, {"id": "no", "label": "no", "shape": "dot", "size": 15}, {"id": "technology", "label": "technology", "shape": "dot", "size": 15}, {"id": "fi", "label": "fi", "shape": "dot", "size": 5}, {"id": "wi", "label": "wi", "shape": "dot", "size": 5}, {"id": "foldable", "label": "foldable", "shape": "dot", "size": 10}, {"id": "future", "label": "future", "shape": "dot", "size": 10}, {"id": "hardware", "label": "hardware", "shape": "dot", "size": 20}, {"id": "old", "label": "old", "shape": "dot", "size": 20}, {"id": "right", "label": "right", "shape": "dot", "size": 20}, {"id": "software", "label": "software", "shape": "dot", "size": 20}, {"id": "jailbreakers", "label": "jailbreakers", "shape": "dot", "size": 10}, {"id": "most", "label": "most", "shape": "dot", "size": 10}, {"id": "just", "label": "just", "shape": "dot", "size": 10}, {"id": "shareholders", "label": "shareholders", "shape": "dot", "size": 10}, {"id": "jailbreak", "label": "jailbreak", "shape": "dot", "size": 0}, {"id": "pegasus", "label": "pegasus", "shape": "dot", "size": 0}, {"id": "weeks", "label": "weeks", "shape": "dot", "size": 0}]);
+        edges = new vis.DataSet([{"from": "12", "label": 1, "to": "iot", "weight": 1}, {"from": "12", "label": 1, "to": "iphone", "weight": 1}, {"from": "12", "label": 1, "to": "smackdown", "weight": 1}, {"from": "12", "label": 1, "to": "the", "weight": 1}, {"from": "14", "label": 1, "to": "display", "weight": 1}, {"from": "14", "label": 1, "to": "iphone", "weight": 1}, {"from": "14", "label": 1, "to": "production", "weight": 1}, {"from": "accessibility", "label": 1, "to": "apples", "weight": 1}, {"from": "accessibility", "label": 1, "to": "features", "weight": 1}, {"from": "accessibility", "label": 1, "to": "new", "weight": 1}, {"from": "algunos", "label": 1, "to": "beta", "weight": 1}, {"from": "algunos", "label": 2, "to": "de", "weight": 2}, {"from": "algunos", "label": 1, "to": "ios", "weight": 1}, {"from": "algunos", "label": 1, "to": "la", "weight": 1}, {"from": "algunos", "label": 1, "to": "se", "weight": 1}, {"from": "algunos", "label": 1, "to": "sorprenden", "weight": 1}, {"from": "and", "label": 1, "to": "app", "weight": 1}, {"from": "and", "label": 1, "to": "hackable", "weight": 1}, {"from": "and", "label": 1, "to": "ios", "weight": 1}, {"from": "and", "label": 1, "to": "ios1", "weight": 1}, {"from": "and", "label": 1, "to": "macos", "weight": 1}, {"from": "and", "label": 1, "to": "photos", "weight": 1}, {"from": "and", "label": 1, "to": "trackable", "weight": 1}, {"from": "android", "label": 1, "to": "best", "weight": 1}, {"from": "android", "label": 1, "to": "flagship", "weight": 1}, {"from": "android", "label": 1, "to": "ipad", "weight": 1}, {"from": "android", "label": 1, "to": "iphone", "weight": 1}, {"from": "android", "label": 1, "to": "okwint", "weight": 1}, {"from": "android", "label": 1, "to": "pc", "weight": 1}, {"from": "android", "label": 1, "to": "phones", "weight": 1}, {"from": "android", "label": 1, "to": "the", "weight": 1}, {"from": "any", "label": 1, "to": "issues", "weight": 1}, {"from": "any", "label": 1, "to": "safari", "weight": 1}, {"from": "app", "label": 1, "to": "ios", "weight": 1}, {"from": "app", "label": 1, "to": "macos", "weight": 1}, {"from": "app", "label": 1, "to": "photos", "weight": 1}, {"from": "apple", "label": 1, "to": "not", "weight": 1}, {"from": "apples", "label": 1, "to": "features", "weight": 1}, {"from": "apples", "label": 1, "to": "new", "weight": 1}, {"from": "backup", "label": 1, "to": "icloud", "weight": 1}, {"from": "backup", "label": 1, "to": "login", "weight": 1}, {"from": "best", "label": 1, "to": "flagship", "weight": 1}, {"from": "best", "label": 1, "to": "phones", "weight": 1}, {"from": "best", "label": 1, "to": "the", "weight": 1}, {"from": "beta", "label": 2, "to": "de", "weight": 2}, {"from": "beta", "label": 1, "to": "ios", "weight": 1}, {"from": "beta", "label": 1, "to": "la", "weight": 1}, {"from": "beta", "label": 1, "to": "se", "weight": 1}, {"from": "beta", "label": 1, "to": "sorprenden", "weight": 1}, {"from": "breaking", "label": 1, "to": "ground", "weight": 1}, {"from": "breaking", "label": 1, "to": "no", "weight": 1}, {"from": "breaking", "label": 1, "to": "technology", "weight": 1}, {"from": "de", "label": 2, "to": "ios", "weight": 2}, {"from": "de", "label": 2, "to": "la", "weight": 2}, {"from": "de", "label": 2, "to": "se", "weight": 2}, {"from": "de", "label": 2, "to": "sorprenden", "weight": 2}, {"from": "display", "label": 1, "to": "iphone", "weight": 1}, {"from": "display", "label": 1, "to": "production", "weight": 1}, {"from": "features", "label": 1, "to": "new", "weight": 1}, {"from": "fi", "label": 1, "to": "wi", "weight": 1}, {"from": "flagship", "label": 1, "to": "phones", "weight": 1}, {"from": "flagship", "label": 1, "to": "the", "weight": 1}, {"from": "foldable", "label": 1, "to": "future", "weight": 1}, {"from": "foldable", "label": 1, "to": "iphone", "weight": 1}, {"from": "future", "label": 1, "to": "iphone", "weight": 1}, {"from": "ground", "label": 1, "to": "no", "weight": 1}, {"from": "ground", "label": 1, "to": "technology", "weight": 1}, {"from": "hackable", "label": 1, "to": "ios1", "weight": 1}, {"from": "hackable", "label": 1, "to": "trackable", "weight": 1}, {"from": "hardware", "label": 1, "to": "new", "weight": 1}, {"from": "hardware", "label": 1, "to": "old", "weight": 1}, {"from": "hardware", "label": 1, "to": "right", "weight": 1}, {"from": "hardware", "label": 1, "to": "software", "weight": 1}, {"from": "icloud", "label": 1, "to": "login", "weight": 1}, {"from": "ios", "label": 1, "to": "la", "weight": 1}, {"from": "ios", "label": 1, "to": "macos", "weight": 1}, {"from": "ios", "label": 1, "to": "photos", "weight": 1}, {"from": "ios", "label": 1, "to": "se", "weight": 1}, {"from": "ios", "label": 1, "to": "sorprenden", "weight": 1}, {"from": "ios1", "label": 1, "to": "trackable", "weight": 1}, {"from": "iot", "label": 1, "to": "iphone", "weight": 1}, {"from": "iot", "label": 1, "to": "smackdown", "weight": 1}, {"from": "iot", "label": 1, "to": "the", "weight": 1}, {"from": "ipad", "label": 1, "to": "iphone", "weight": 1}, {"from": "ipad", "label": 1, "to": "okwint", "weight": 1}, {"from": "ipad", "label": 1, "to": "pc", "weight": 1}, {"from": "iphone", "label": 1, "to": "jailbreakers", "weight": 1}, {"from": "iphone", "label": 1, "to": "most", "weight": 1}, {"from": "iphone", "label": 1, "to": "okwint", "weight": 1}, {"from": "iphone", "label": 1, "to": "pc", "weight": 1}, {"from": "iphone", "label": 1, "to": "production", "weight": 1}, {"from": "iphone", "label": 1, "to": "smackdown", "weight": 1}, {"from": "iphone", "label": 1, "to": "the", "weight": 1}, {"from": "issues", "label": 1, "to": "safari", "weight": 1}, {"from": "jailbreakers", "label": 1, "to": "most", "weight": 1}, {"from": "just", "label": 1, "to": "not", "weight": 1}, {"from": "just", "label": 1, "to": "shareholders", "weight": 1}, {"from": "la", "label": 1, "to": "se", "weight": 1}, {"from": "la", "label": 1, "to": "sorprenden", "weight": 1}, {"from": "macos", "label": 1, "to": "photos", "weight": 1}, {"from": "new", "label": 1, "to": "old", "weight": 1}, {"from": "new", "label": 1, "to": "right", "weight": 1}, {"from": "new", "label": 1, "to": "software", "weight": 1}, {"from": "no", "label": 1, "to": "technology", "weight": 1}, {"from": "not", "label": 1, "to": "shareholders", "weight": 1}, {"from": "okwint", "label": 1, "to": "pc", "weight": 1}, {"from": "old", "label": 1, "to": "right", "weight": 1}, {"from": "old", "label": 1, "to": "software", "weight": 1}, {"from": "phones", "label": 1, "to": "the", "weight": 1}, {"from": "right", "label": 1, "to": "software", "weight": 1}, {"from": "se", "label": 1, "to": "sorprenden", "weight": 1}, {"from": "smackdown", "label": 1, "to": "the", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

@@ -2,9 +2,9 @@ import os
 import pandas as pd
 import numpy as np
 import streamlit as st
-import streamlit_wordcloud as wordcloud
+# import streamlit_wordcloud as wordcloud
 from streamlit_option_menu import option_menu
-import streamlit.components.v1 as html
+import streamlit.components.v1 as components
 # from common import set_page_container_style
 import matplotlib.pyplot as plt
 import plotly.express as px
@@ -19,10 +19,13 @@ from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 # from nltk import ngrams
 from sklearn.feature_extraction.text import CountVectorizer
-from imageio import imread
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator, get_single_color_func
+from imageio.v2 import imread
+from wordcloud import WordCloud
 from urllib.error import URLError
 import pydeck as pdk
+from show_extreme_posts import postExtremeComments
+import networkx as nx
+from pyvis import network as net
 
 
 def main():
@@ -37,21 +40,26 @@ def main():
     # ========== Data ==================================================================
     # ==================================================================================
     
+    path = 'streamlit_app/data/'
+    
     brands = ['Iphone', 'Samsung', 'Robinhood', 'WhatsApp', 'Netflix', 'Disney', 'McDonalds', 'Ferrari']
-    streams = ['Twitter', 'Reddit']
-    topic_types = ['Hastags', 'Broad Topics', 'Keywords']
+    streams = ['Reddit','Twitter']
+    topic_types = ['Hashtags', 'Broad Topics']
     times = ['Last 1w', 'Last 1m', 'Last 6m', 'Last 1yr', 'Last 5yr']
     times_dict = {'Last 1w':1, 'Last 1m':2, 'Last 6m':3, 'Last 1yr':4, 'Last 5yr':5}
     weightages = ['# Posts', '# Votes']
     sent_feelings = ['Negative', 'Neutral', 'Positive']
     emo_feelings = ['joy', 'sadness', 'surprise', 'anger', 'fear']
     colors = ['#e86252', '#ddb967', '#43aa8b', '#086788']
+    posColor = 'rgb(128,177,211)'
+    negColor = 'rgb(128,177,211)'
+    quantity = 10
+    keywordMarker = 'KW'
+    probThresh = 0.99
     
     # load data once
     @st.experimental_memo
     def load_data():
-        
-        path = 'streamlit_app/data/'
         
         df = pd.read_pickle(os.path.join(path,'df.pkl'))
         df['date_time'] = pd.to_datetime(df['time_of_creation'])
@@ -93,13 +101,8 @@ def main():
         fig = px.bar(data, x="date", y=agg_col, color="sentiment", 
                     color_discrete_map={'Negative': colors[0], 'Neutral': colors[1], 'Positive': colors[2]})
         fig.update_layout(
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-            ))
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            margin_l=10, margin_r=10, margin_t=10, margin_b=10)
         # fig['layout']['xaxis']['dtick']=1
         
         return fig
@@ -130,6 +133,12 @@ def main():
         #     x=1
         # ))
         fig.update_traces(sort=False) 
+        fig.update_layout(
+            # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
+            showlegend=False,
+            margin_l=25, margin_r=25, margin_t=25, margin_b=25, 
+            # yaxis_visible=False, yaxis_showticklabels=False
+        )
         
         return fig
     
@@ -267,8 +276,151 @@ def main():
         #     xanchor="right",
         #     x=1
         # ))
+        fig.update_layout(
+            # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
+            showlegend=False,
+            margin_l=25, margin_r=25, margin_t=25, margin_b=25, 
+            # yaxis_visible=False, yaxis_showticklabels=False
+        )
         
         return fig
+    
+    
+    def prepare_topic_data(df, brand, stream, topic_type, weight):
+        
+        agg_col = 'posts' if weight=='# Posts' else 'votes'
+        data = df[(df['brand']==brand) & (df['stream']==stream)]
+        
+        if topic_type=='Hashtags':
+            topics = list(set([ht for ht_set in data['hashtags'].tolist() for ht in ht_set if ht_set]))
+        elif topic_type=='Broad Topics':
+            topics = kw_yake[brand][stream]
+        else:
+            topics = kw_kbnc[brand][stream]
+        
+        topic_count = []
+        for topic in topics:
+            if topic_type=='Hashtags':
+                x = data['text'].str.lower().str.contains(topic) * data[agg_col].astype(int)
+            else:
+                x = data['text_clean_yake'].str.contains(topic) * data[agg_col].astype(int)
+            topic_count.append([
+                topic,
+                ((x) & (data['sentiment']=='Negative')).sum(),
+                ((x) & (data['sentiment']=='Neutral')).sum(),
+                ((x) & (data['sentiment']=='Positive')).sum(),
+                ((x) & (data['emotion']=='joy')).sum(),
+                ((x) & (data['emotion']=='sadness')).sum(),
+                ((x) & (data['emotion']=='surprise')).sum(),
+                ((x) & (data['emotion']=='anger')).sum(),
+                ((x) & (data['emotion']=='fear')).sum(),
+            ])
+        
+        topic_df = pd.DataFrame(topic_count, columns=['topic', 'Negative', 'Neutral', 'Positive',
+                                   'joy', 'sadness', 'surprise', 'anger', 'fear'])
+        topic_df['total'] = topic_df[['Negative', 'Neutral', 'Positive']].sum(axis=1)
+        topic_df = topic_df.sort_values('total', ascending=False).iloc[:15,:].iloc[::-1]
+        # print(topic_df)
+        # print(topic_df['topic'].tolist())
+        
+        return topic_df
+    
+    # @st.experimental_memo
+    def plot_topic_freq(df, brand, stream, topic_type, weight):
+        
+        topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)  
+        
+        fig = px.bar(topic_df, y='topic', x='total', orientation='h')
+        fig.update_traces(marker_color='#086788')
+        
+        fig.update_layout(
+            # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
+            showlegend=False,
+            margin_l=10, margin_r=10, margin_t=10, margin_b=10, 
+            # yaxis_visible=False, yaxis_showticklabels=False
+        )
+        
+        return fig
+        
+      
+    def plot_topic_sentiment(df, brand, stream, topic_type, weight):
+        
+        topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)
+        
+        topic_df_sent = topic_df[['topic','Negative', 'Neutral', 'Positive']].set_index('topic')
+        topic_df_sent = topic_df_sent.div(topic_df_sent.sum(axis=1), axis=0).reset_index()
+        topic_df_sent = pd.melt(topic_df_sent, id_vars='topic', 
+                                value_vars=['Negative', 'Neutral', 'Positive'])
+        topic_df_sent.columns = ['topic', 'sentiment', 'value']
+        fig = px.bar(topic_df_sent, x="value", y="topic", color="sentiment", orientation='h',
+                    color_discrete_map={'Negative': colors[0], 'Neutral': colors[1], 'Positive': colors[2]},
+                    hover_data={'value':':.1%', # remove species from hover data
+                                    })
+        fig.update_layout(
+            # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
+            showlegend=False,
+            margin_l=10, margin_r=10, margin_t=10, margin_b=10, 
+            yaxis_visible=False, yaxis_showticklabels=False
+        )
+        
+        return fig
+    
+    
+    def plot_topic_emotion(df, brand, stream, topic_type, weight):
+        
+        topic_df = prepare_topic_data(df, brand, stream, topic_type, weight)
+        
+        topic_df_sent = topic_df[['topic']+emo_feelings].set_index('topic')
+        topic_df_sent = topic_df_sent.div(topic_df_sent.sum(axis=1), axis=0).reset_index()
+        topic_df_sent = pd.melt(topic_df_sent, id_vars='topic', 
+                                value_vars=emo_feelings)
+        topic_df_sent.columns = ['topic', 'emotion', 'value']
+        fig = px.bar(topic_df_sent, x="value", y="topic", color="emotion", orientation='h',
+                    # color_discrete_map={'joy': 'rgb(102, ', 'sadness': colors[1], 'surprise': colors[2], 'anger':, 'fear':},
+                    color_discrete_sequence=px.colors.qualitative.Set2,
+                    hover_data={'value':':.1%', # remove species from hover data
+                                    })
+        fig.update_layout(
+            # legend=dict(orientation="h"),
+            showlegend=False,
+            margin_l=10, margin_r=10, margin_t=10, margin_b=10, 
+            yaxis_visible=False, yaxis_showticklabels=False
+        )
+        
+        return fig
+    
+    def show_network(brand, stream, kw_kbnc):
+        
+        kw = kw_kbnc[brand][stream]
+        
+        count_model = CountVectorizer(ngram_range=(1,1)) # default unigram model
+        X = count_model.fit_transform(kw)
+        # X[X > 0] = 1 # run this line if you don't want extra within-text cooccurence (see below)
+        Xc = (X.T * X) # this is co-occurrence matrix in sparse csr format
+        Xc.setdiag(0) # sometimes you want to fill same word cooccurence to 0
+        
+        vocab_map = {v:k for k,v in count_model.vocabulary_.items()}
+        
+        G = nx.from_numpy_matrix(Xc.todense())
+        G = nx.relabel_nodes(G, vocab_map)
+        scale=5 # Scaling the size of the nodes by 10*degree
+        d = dict(G.degree)
+        #Updating dict
+        d.update((x, scale*y) for x, y in d.items())
+        #Setting up size attribute
+        nx.set_node_attributes(G,d,'size')
+        
+        # g = net.Network()
+        g = net.Network(height='500px', width='90%')
+        g.from_nx(G)
+        # g.barnes_hut(central_gravity=0.8)
+        # g.show_buttons(filter_=['physics'])
+        g.show(os.path.join(path, 'kw_graph.html'))
+        
+        HtmlFile = open(os.path.join(path, 'kw_graph.html'), 'r', encoding='utf-8')
+        source_code = HtmlFile.read()
+        components.html(source_code, height = 1200, width=1200)
+    
     
     # @st.experimental_memo
     def prepare_geo_data(df, brand, time_period, weight, detection, feeling):
@@ -385,8 +537,32 @@ def main():
         
         # st.pydeck_chart(r)
     
-    def prepare_topic_data(df):
-        return None
+    
+    def show_posts(df, brand, stream, time_period, kw):
+
+        data = df[(df['brand']==brand) & (df['stream']==stream) & (df['time_period']<=times_dict[time_period])]
+
+        keywords = kw[brand][stream]
+
+        positiveData = data[(data["sentiment_prediction"] == 1) & (data['sentiment_probability'] > probThresh)]\
+            .sort_values(by=["votes","sentiment_probability"], ascending=[False,False])
+        negativeData = data[(data["sentiment_prediction"] == -1) & (data['sentiment_probability'] > probThresh)]\
+            .sort_values(by=["votes","sentiment_probability"], ascending=[False,False])
+        # negativeData = negativeData_raw[negativeData_raw['sentiment_probability'] < negProbThresh]
+
+        topPos = positiveData.iloc[0:quantity]
+        topNeg = negativeData.iloc[0:quantity]
+
+        # """
+        # # Most positive comments:
+        # """
+        st.header('Extreme Comments')
+        postExtremeComments(topPos, keywords, posColor, extreme='Positive')
+        # """
+        
+        # # Most negative comments:
+        # """
+        postExtremeComments(topNeg, keywords, negColor, extreme='Negative')
     
     
     df, kw_yake, kw_kbnc = load_data()
@@ -502,34 +678,34 @@ def main():
     
     if choose_menu=='Keyword Analytics':
 
-        
-        row1_1, _, row1_2, row1_3, _, row1_4, row1_5 = st.columns([1, 0.1, 1, 1, 0.1, 1, 1])
+        row1_1, _, row1_2, row1_3, _, row1_4, _ = st.columns([1, 0.1, 1, 1, 0.1, 1, 1])
         with row1_1:
             brand = st.selectbox(f'Select Brand', brands, help='Choose the brand that you want to analyze. The current prototype contains 10+ brands')
         with row1_2:
             stream = st.radio(f'Select Social Stream', streams, help='Choose the social media')
         with row1_3:
-            topic_type = st.selectbox(f'Select Topic Type', topic_types, help='Choose the the type/level of topic to analyze')
+            topic_type = st.selectbox(f'Select Topic Type', topic_types if stream=='Twitter' else ['Broad Topics'], help='Choose the the type/level of topic to analyze')
         with row1_4:
-            time_period = st.select_slider(f'Select Time Period', times, value='Last 1m', help='Choose the time period')
-        with row1_5:
             weight = st.radio(f'Weightage Scheme', weightages, help='Choose if you want to weight the values by upvotes')
 
-        row2_1, row2_2, row2_3 = st.columns([2,3,3])
-        with row2_1:
+        row2_1, row2_2, row2_3 = st.columns([4,3,3])
+        with row2_1:    
             with st.expander("Topic Frequency", expanded=True):
                 # st.plotly_chart(plot_timeline(df, brand, stream, time_period, weight), use_container_width=True)
-                st.write('XX')
+                st.plotly_chart(plot_topic_freq(df, brand, stream, topic_type, weight), use_container_width=True)
             
         with row2_2:
             with st.expander("Topic Sentiment", expanded=True):
                 # st.plotly_chart(plot_sentiment(df, brand, stream, time_period, weight), use_container_width=True)
-                st.write('XX')
+                st.plotly_chart(plot_topic_sentiment(df, brand, stream, topic_type, weight), use_container_width=True)
         
         with row2_3:
             with st.expander("Topic Emotion", expanded=True):
                 # st.plotly_chart(plot_sentiment(df, brand, stream, time_period, weight), use_container_width=True)
-                st.write('XX')
+                st.plotly_chart(plot_topic_emotion(df, brand, stream, topic_type, weight), use_container_width=True)
+        
+        st.subheader("Keyphrase Network")
+        show_network(brand, stream, kw_kbnc)
     
     if choose_menu=='Geo Analytics':
         
@@ -549,6 +725,20 @@ def main():
 
         display_geo_analysis(df, brand, time_period, weight, detection, feeling)
      
+     
+    if choose_menu=='Data Deepdive':
+        
+        row1_1, _, row1_2, row1_3, _, _ = st.columns([1, 0.2, 1, 1, 0.2, 1])
+        with row1_1:
+            brand = st.selectbox(f'Select Brand', brands, help='Choose the brand that you want to analyze. The current prototype contains 10+ brands')
+        with row1_2:
+            stream = st.radio(f'Select Social Stream', streams, help='Choose the social media')
+        with row1_3:
+            time_period = st.select_slider(f'Select Time Period', times, value='Last 1m', help='Choose the time period')
+        
+        show_posts(df, brand, stream, time_period, kw_yake)
+
+
      
     if choose_menu=='About':
         # st.header('Description')
