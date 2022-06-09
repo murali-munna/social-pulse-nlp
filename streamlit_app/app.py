@@ -115,6 +115,7 @@ def main():
     @st.experimental_memo
     def plot_sentiment(df, brand, stream, time_period, weight):
         
+        
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         data = df[(df['brand']==brand) & (df['stream']==stream) & (df['time_period']<=times_dict[time_period])]
         
