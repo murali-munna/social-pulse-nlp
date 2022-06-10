@@ -104,7 +104,9 @@ A Brand Manager can ask and answer several questions like:
 
 ## Documentation
 
-To view Sphinx documentation, navigate to sphinx/_build/html and open index.html in a browser
+Click the link below to be directed to our Sphinx documentation page:
+
+https://murali-munna.github.io/social-pulse-nlp/
 
 ---
 
