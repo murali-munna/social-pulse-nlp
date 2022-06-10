@@ -97,9 +97,9 @@ A Brand Manager can ask and answer several questions like:
 
 
 ## Application Architecture
-![Architecture](readme_imgs/arch1.PNG "Architecture")
+![Architecture](readme_imgs/arch1.png "Architecture")
 
-![Architecture](readme_imgs/arch2.PNG "Architecture")
+![Architecture](readme_imgs/arch2.png "Architecture")
 
 
 ## Documentation
