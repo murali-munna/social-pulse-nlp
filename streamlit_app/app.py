@@ -68,20 +68,6 @@ def main():
         """
 
         df = pd.read_pickle(os.path.join(path,'df.pkl'))
-        # df['date_time'] = pd.to_datetime(df['time_of_creation'])
-        # df['date'] = pd.to_datetime(df['time_of_creation']).dt.date
-        # df['days_diff'] = (pd.Timestamp.now() - df['date_time']).dt.days
-        # df['time_period'] = np.where(df['days_diff']<=7, 1,
-        #                      np.where(df['days_diff']<=31, 2,
-        #                      np.where(df['days_diff']<=180, 3,
-        #                      np.where(df['days_diff']<=365, 4,
-        #                      np.where(df['days_diff']<=365*5, 5, 6)))))
-        # df['posts'] = 1
-        # df['votes'] = df['ups'].fillna(df['favorite_count'])
-        # df['sentiment'] = df['sentiment_prediction'].replace({1:'Positive', 0:'Neutral', -1:'Negative'})
-        # df['sentiment'] = pd.Categorical(df['sentiment'], ["Negative", "Neutral", "Positive"])
-        # df = df.rename({'emotion prediction': 'emotion'}, axis=1)
-        # df['emotion'] = pd.Categorical(df['emotion'], ['joy', 'sadness', 'surprise', 'anger', 'fear'])
         
         kw_ht = pickle.load(open(os.path.join(path,'kw_ht.pkl'), 'rb'))
         kw_yake = pickle.load(open(os.path.join(path,'kw_yake.pkl'), 'rb'))
@@ -89,10 +75,8 @@ def main():
         kw_kbnc = pickle.load(open(os.path.join(path,'kw_kbnc.pkl'), 'rb'))
 
         return df, kw_ht, kw_yake, kw_kbnc
-    
-    @st.experimental_memo
-    def get_filters(df):
-        return None
+
+
 
     @st.experimental_memo
     def plot_timeline(df, brand, stream, time_period, weight):
@@ -114,9 +98,6 @@ def main():
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         data = df[(df['brand']==brand) & (df['stream']==stream) & (df['time_period']<=times_dict[time_period])]
         
-        # long_df = px.data.medals_long()
-        # fig = px.bar(long_df, x="nation", y="count", color="medal", title="Long-Form Input")
-        
         data = data.groupby(['date','sentiment'])[agg_col].sum().reset_index().sort_values(['date', 'sentiment'], ascending=[True, True])
 
         fig = px.bar(data, x="date", y=agg_col, color="sentiment", 
@@ -124,13 +105,9 @@ def main():
         fig.update_layout(
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             margin_l=10, margin_r=10, margin_t=10, margin_b=10)
-        # fig['layout']['xaxis']['dtick']=1
         
         return fig
     
-    @st.experimental_memo
-    def get_filters(df):
-        return None
 
     @st.experimental_memo
     def plot_sentiment(df, brand, stream, time_period, weight):
@@ -153,21 +130,11 @@ def main():
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         data = df[(df['brand']==brand) & (df['stream']==stream) & (df['time_period']<=times_dict[time_period])]
         
-        # fig2 = px.pie(pd.DataFrame({'sentiment':['Positive', 'Neutral', 'Negative'], 'score':[30, 60, 10]}), 
-        #               values='score', names='sentiment', hole=0.4) #, title=f'<b>Sentiment Distrbution<b>'
-        
         data = data.groupby(['sentiment'])[agg_col].sum().reset_index().sort_values(['sentiment'], ascending=[True])
 
         fig = px.pie(data, values=agg_col, names='sentiment', hole=0.4,
                      color='sentiment', color_discrete_sequence=colors)
         
-        # fig.update_layout(legend=dict(
-        #     orientation="h",
-        #     yanchor="bottom",
-        #     y=1.02,
-        #     xanchor="right",
-        #     x=1
-        # ))
         fig.update_traces(sort=False) 
         fig.update_layout(
             # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
@@ -251,23 +218,7 @@ def main():
             else:
                 neg_words.append(key)
         
-        # words = []
-        # for word, val in ngram_counts.items():
-        #     word_color = colors[1] #neutral words' color
-        #     sentiment = 'Neutral'
-        #     if word in pos_words:
-        #         word_color = colors[2] # positive words' color
-        #         sentiment = 'Positive'
-        #     elif word in neg_words:
-        #         word_color = colors[0] # negative words' color
-        #         sentiment = 'Negative'
-                
-        #     dic = dict(text=word, value=val, color=word_color, sentiment=sentiment)
-        #     words.append(dic)
-        # print(words)
         
-        # obj = wordcloud.visualize(words, width='100%', tooltip_data_fields={
-        #     'text':'Word', 'value':'Count', 'sentiment':'Sentiment'}, per_word_coloring=True, max_words = 50 if ngram==2 else 100)
         class AssignColour(object):
             def __init__(self, color_to_words, default_color):
                 self.word_to_color = {word: color
@@ -327,20 +278,11 @@ def main():
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         data = df[(df['brand']==brand) & (df['stream']==stream) & (df['time_period']<=times_dict[time_period])]
         
-        # fig2 = px.pie(pd.DataFrame({'sentiment':['Positive', 'Neutral', 'Negative'], 'score':[30, 60, 10]}), 
-        #               values='score', names='sentiment', hole=0.4) #, title=f'<b>Sentiment Distrbution<b>'
         
         data = data.groupby(['emotion'])[agg_col].sum().reset_index().sort_values(['emotion'], ascending=[True])
         
         fig = px.line_polar(data, r=agg_col, theta='emotion', line_close=True, hover_name='emotion')
         fig.update_traces(fill='toself', line_color=colors[3])
-        # fig.update_layout(legend=dict(
-        #     orientation="h",
-        #     yanchor="bottom",
-        #     y=1.02,
-        #     xanchor="right",
-        #     x=1
-        # ))
         fig.update_layout(
             # legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right",x=1),
             showlegend=False,
@@ -353,19 +295,20 @@ def main():
     
     def prepare_topic_data(df, brand, stream, topic_type, weight):
         """
-        It takes in a dataframe, brand, stream, topic type, and weight, and returns a dataframe with the top 15 topics for
-        that brand/stream/topic type/weight
-
+        It takes a dataframe, a brand, a stream, a topic type, and a weight, and returns a dataframe
+        with the top 15 topics for that brand, stream, topic type, and weight
+        
         Args:
           df: the dataframe containing the data
-          brand: the brand you want to analyze
-          stream: 'All', 'Facebook', 'Twitter', 'Instagram', 'YouTube', 'Reddit', 'Forums', 'Blogs', 'News'
+          brand: The brand you want to analyze.
+          stream: The stream you want to analyze.
           topic_type: Hashtags, Broad Topics, or Keywords
           weight: '# Posts' or '# Votes'
-
+        
         Returns:
           A dataframe with the top 15 topics for the given brand, stream, topic type, and weight.
         """
+        
 
         agg_col = 'posts' if weight=='# Posts' else 'votes'
         data = df[(df['brand']==brand) & (df['stream']==stream)]
@@ -400,8 +343,6 @@ def main():
                                    'joy', 'sadness', 'surprise', 'anger', 'fear'])
         topic_df['total'] = topic_df[['Negative', 'Neutral', 'Positive']].sum(axis=1)
         topic_df = topic_df.sort_values('total', ascending=False).iloc[:15,:].iloc[::-1]
-        # print(topic_df)
-        # print(topic_df['topic'].tolist())
         
         return topic_df
     
@@ -526,7 +467,6 @@ def main():
         for k in kw:
             s = [w for w in k.split() if w not in STOP_WORDS]
             kw_clean.append(' '.join(s))
-        # print(kw_clean)
             
             
         count_model = CountVectorizer(ngram_range=(1,1)) # default unigram model
@@ -562,7 +502,7 @@ def main():
     def prepare_geo_data(df, brand, time_period, weight, detection, feeling):
         """
         It takes in the dataframe, brand, time period, weight, detection, and feeling, and returns a dataframe with the
-        latitude, longitude, and the weight of the feeling
+        latitude, longitude, and the frequency of the feeling
 
         Args:
           df: the dataframe
@@ -586,8 +526,6 @@ def main():
         detect_col = 'sentiment' if detection=='Sentiment' else 'emotion'
         data = df[(df['brand']==brand) & (df['stream']=='Twitter') & (df['time_period']<=times_dict[time_period])]
         
-        # fig2 = px.pie(pd.DataFrame({'sentiment':['Positive', 'Neutral', 'Negative'], 'score':[30, 60, 10]}), 
-        #               values='score', names='sentiment', hole=0.4) #, title=f'<b>Sentiment Distrbution<b>'
         
         def getLoc(locStr, i):
             if not isinstance(locStr, str):
@@ -599,15 +537,7 @@ def main():
         
         data['lat'] = data.apply(lambda row: getLoc(row['location'], 0), axis=1)
         data['lon'] = data.apply(lambda row: getLoc(row['location'], 1), axis=1)
-        
-        # data['lat_lon'] = data['lat'].astype(str) + '_' + data['lon'].astype(str)
-        # data = data.groupby(['lat_lon', detect_col])[agg_col].sum().reset_index()
-        # data1 = data.groupby('lat_lon')[agg_col].sum().reset_index()
-        # data = pd.merge(data, data1, on='lat_lon')
-        # data[agg_col] = data[agg_col+'_x']/data[agg_col+'_y'] * 100
-        # data['lat'] = data['lat_lon'].str.split('_', expand=True)[0].astype(float)
-        # data['lon'] = data['lat_lon'].str.split('_', expand=True)[1].astype(float)
-        # data = data[data[detect_col]==feeling][['lat', 'lon', agg_col]]
+
         
         data = data[data[detect_col]==feeling][['lat', 'lon', detect_col, agg_col]]
         
@@ -756,33 +686,6 @@ def main():
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     
 
-    # padding_top = -20
-
-    # st.markdown(f"""
-    #     <style>
-    #         .reportview-container .main .block-container{{
-    #             padding-top: {padding_top}rem;
-    #         }}
-    #     </style>""",
-    #     unsafe_allow_html=True,
-    # )
-    # st.markdown(
-    #         f'''
-    #         <style>
-    #             .reportview-container .sidebar-content {{
-    #                 padding-top: {1}rem;
-    #             }}
-    #             .reportview-container .main .block-container {{
-    #                 padding-top: {1}rem;
-    #             }}
-    #         </style>
-    #         ''',unsafe_allow_html=True)
-
-    # set_page_container_style(
-    #     max_width = 1100, max_width_100_percent = True,
-    #     padding_top = 1, padding_right = 1, padding_left = 1, padding_bottom = 1
-    # )
-
     st.title("💬 Social Pulse")
 
 
@@ -815,41 +718,19 @@ def main():
         
         row2_1, row2_2 = st.columns([3,2])
         with row2_1:
-            # st.write('**Posts Timeline**')
-            # st.bar_chart(chart_data, width=200, height=300)
             with st.expander("Posts Timeline", expanded=True):
                 st.plotly_chart(plot_timeline(df, brand, stream, time_period, weight), use_container_width=True)
-            # source = data.barley()
-
-            # st.altair_chart(
-            #     alt.Chart(source).mark_bar().encode(
-            #     x='variety',
-            #     y='sum(yield)',
-            #     color='site'
-            #     ),
-            #     use_container_width=True
-            # )
             
             
         with row2_2:
-            # st.write('**Sentiment Distribution**')
             with st.expander("Sentiment Distribution", expanded=True):
                 st.plotly_chart(plot_sentiment(df, brand, stream, time_period, weight), use_container_width=True)
-            # source = pd.DataFrame({"category": [1, 2, 3, 4, 5, 6], "value": [4, 6, 10, 3, 7, 8]})
-            # st.altair_chart(
-            #     alt.Chart(source).mark_arc(innerRadius=50).encode(
-            #         theta=alt.Theta(field="value", type="quantitative"),
-            #         color=alt.Color(field="category", type="nominal"),
-            #     ),
-            #     use_container_width=True
-            # )
+                
         
         row3_1, row3_2 = st.columns([3,2])
         with row3_1:
             with st.expander("N-gram Word Cloud", expanded=True):
                 ngram = st.radio(f'N-gram', ['uni-gram', 'bi-gram'], index=1)
-                # st.write(plot_wordcloud(df, brand, stream, time_period, weight, ngram), use_container_width=True)
-                # 1 if ngram=='uni-gram' else 2
                 st.pyplot(plot_wordcloud(df, brand, stream, time_period, weight, 1 if ngram=='uni-gram' else 2))
             
         with row3_2:
@@ -955,7 +836,7 @@ def main():
             st.write(
                 """     
                 -   **Github**: [Social Pulse](https://github.com/murali-munna/social-pulse-nlp)
-                -   **Read the Docs**: 
+                -   **Documentation**: 
                 """
         )
             
