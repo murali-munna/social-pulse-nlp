@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentiment_model module &mdash; Social Pulse 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Emotional_model module" href="Emotional_model.html" />
+    <link rel="prev" title="show_extreme_posts module" href="show_extreme_posts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Social Pulse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">streamlit_app</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html#sentiment-model">sentiment_model</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sentiment_model module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#emotion-model">emotion_model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#keyword-extraction">keyword_extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#scraper">scraper</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Social Pulse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">streamlit_app</a> &raquo;</li>
+      <li>Sentiment_model module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Sentiment_model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Sentiment_model">
+<span id="sentiment-model-module"></span><h1>Sentiment_model module<a class="headerlink" href="#module-Sentiment_model" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.appendData">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">appendData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.appendData" title="Permalink to this definition"></a></dt>
+<dd><p>It takes the data from the three datasets, cleans the text, and then uses the sentiment model to predict the sentiment
+of each tweet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the sentiment prediction and the sentiment probability for each row in the dataframe.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.clean_text">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">clean_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.clean_text" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a string as input, and returns a string with all the non-alphanumeric characters removed,
+and all the words converted to lowercase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – The text to be cleaned</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.getData">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">getData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">twitterFname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redditFname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.getData" title="Permalink to this definition"></a></dt>
+<dd><p>It reads in the two data files, combines them, and then splits them into training and test sets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>twitterFname</strong> – the name of the file containing the twitter data</p></li>
+<li><p><strong>redditFname</strong> – The name of the file containing the Reddit data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>train_X, test_X, train_y, test_y</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.modelPredict">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">modelPredict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clf_svm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorizer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.modelPredict" title="Permalink to this definition"></a></dt>
+<dd><p>&gt; The function takes in a trained model and a vectorizer and returns the prediction of the model on the text ‘How about
+this text?’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clf_svm</strong> – the trained model</p></li>
+<li><p><strong>vectorizer</strong> – This is the vectorizer that we trained on our training data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The model is returning the predicted class of the input text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.train_SVM">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">train_SVM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_X_vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_X_vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.train_SVM" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in the training and testing data, and returns a trained SVM model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_X_vectors</strong> – The training data</p></li>
+<li><p><strong>train_y</strong> – the labels for the training data</p></li>
+<li><p><strong>test_X_vectors</strong> – the vectorized test data</p></li>
+<li><p><strong>test_y</strong> – the actual labels of the test set</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the trained model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Sentiment_model.train_vectorizer">
+<span class="sig-prename descclassname"><span class="pre">Sentiment_model.</span></span><span class="sig-name descname"><span class="pre">train_vectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sentiment_model.train_vectorizer" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a list of strings (train_X) and a list of strings (test_X) and returns a list of vectors
+(train_X_vectors) and a list of vectors (test_X_vectors)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_X</strong> – the training data</p></li>
+<li><p><strong>test_X</strong> – The test data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The vectorizer is being returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="show_extreme_posts.html" class="btn btn-neutral float-left" title="show_extreme_posts module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Emotional_model.html" class="btn btn-neutral float-right" title="Emotional_model module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Murali M K D, Chris Light, Hao Qiu, Pai Tong, Liyang Ru, Yen-Ju Tseng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

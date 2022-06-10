@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>keywords_extract_ module &mdash; Social Pulse 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Praw_Wrapper_ module" href="Praw_Wrapper_.html" />
+    <link rel="prev" title="Emotional_model module" href="Emotional_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Social Pulse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">streamlit_app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#sentiment-model">sentiment_model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#emotion-model">emotion_model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html#keyword-extraction">keyword_extraction</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">keywords_extract_ module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#scraper">scraper</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Social Pulse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">streamlit_app</a> &raquo;</li>
+      <li>keywords_extract_ module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/keywords_extract_.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-keywords_extract_">
+<span id="keywords-extract-module"></span><h1>keywords_extract_ module<a class="headerlink" href="#module-keywords_extract_" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.apply_hashtags">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">apply_hashtags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.apply_hashtags" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a dataframe as input, and returns a dataframe with a new column called ‘hashtags’ that
+contains a list of hashtags for each tweet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – the dataframe</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dataframe with a new column called ‘hashtags’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.get_hashtags">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">get_hashtags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.get_hashtags" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts hashtags from text after performing text preprocessing like lowercasing, punctuation removal etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – the text you want to extract hashtags from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of hashtags</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.get_ht_dict">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">get_ht_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.get_ht_dict" title="Permalink to this definition"></a></dt>
+<dd><p>For each brand, get the hashtags from the twitter and reddit posts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – the dataframe containing the data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of hashtags for each brand and stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.get_kw_kbnc_dict">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">get_kw_kbnc_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kw_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noun_chunks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.get_kw_kbnc_dict" title="Permalink to this definition"></a></dt>
+<dd><p>For each brand, extract the top 20 KeyBERT keywords from the text of each stream (Twitter and Reddit) using
+the noun chunks as candidates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe with the text data</p></li>
+<li><p><strong>kw_model</strong> – the keyword extractor model</p></li>
+<li><p><strong>noun_chunks</strong> – a dictionary of noun chunks for each brand and stream</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of keyBERT keywords for each brand and stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.get_kw_yake_dict">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">get_kw_yake_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.get_kw_yake_dict" title="Permalink to this definition"></a></dt>
+<dd><p>For each brand, get the top 20 keywords from the YAKE keyword extractor for both Twitter and Reddit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – dataframe with the text data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of YAKE keywords for each brand and stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.get_noun_chunks_dict">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">get_noun_chunks_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.get_noun_chunks_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Extract the SpaCy noun chunks from the cleaned text posts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – the dataframe containing the cleaned text data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of SpaCy noun chunks for each brand and stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.load_sentiment_emotion_data">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">load_sentiment_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.load_sentiment_emotion_data" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a path to a directory of csv files, reads them in, and drops and renames some columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – the path to the folder containing the csv files for each brand</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An appended dataframe with the preprocessed columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.spacy_noun_chunks">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">spacy_noun_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en_core_web_lg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.spacy_noun_chunks" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts SpaCy noun chunks from a given preprocessed document text.</p>
+<p>Let’s try it out on the first document in the corpus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_text</strong> – the text you want to extract noun chunks from</p></li>
+<li><p><strong>model</strong> – the model to use for the NLP. Defaults to en_core_web_lg</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of noun chunks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keywords_extract_.text_clean_yake">
+<span class="sig-prename descclassname"><span class="pre">keywords_extract_.</span></span><span class="sig-name descname"><span class="pre">text_clean_yake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keywords_extract_.text_clean_yake" title="Permalink to this definition"></a></dt>
+<dd><p>Cleans the text by removing mentions, hashtags, weblinks, websites, punctuation, non alpha numeric, and additional
+whitespaces</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – The text to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A cleaned text</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Emotional_model.html" class="btn btn-neutral float-left" title="Emotional_model module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Praw_Wrapper_.html" class="btn btn-neutral float-right" title="Praw_Wrapper_ module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Murali M K D, Chris Light, Hao Qiu, Pai Tong, Liyang Ru, Yen-Ju Tseng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

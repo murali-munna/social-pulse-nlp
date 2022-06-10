@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app_ module &mdash; Social Pulse 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="common module" href="common.html" />
+    <link rel="prev" title="streamlit_app" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Social Pulse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">streamlit_app</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">app_ module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common.html">common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="show_extreme_posts.html">show_extreme_posts module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#sentiment-model">sentiment_model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#emotion-model">emotion_model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#keyword-extraction">keyword_extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#scraper">scraper</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Social Pulse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">streamlit_app</a> &raquo;</li>
+      <li>app_ module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/app_.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-app_">
+<span id="app-module"></span><h1>app_ module<a class="headerlink" href="#module-app_" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.display_geo_analysis">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">display_geo_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feeling</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.display_geo_analysis" title="Permalink to this definition"></a></dt>
+<dd><p>&gt; This function takes in a dataframe, brand, time period, weight, detection, and feeling, and returns a map of the
+world with hexagons representing the number of tweets in that area</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – the brand you want to analyze</p></li>
+<li><p><strong>time_period</strong> – the time period you want to look at</p></li>
+<li><p><strong>weight</strong> – the weight of the sentiment score</p></li>
+<li><p><strong>detection</strong> – the type of detection you want to use.</p></li>
+<li><p><strong>feeling</strong> – the feeling you want to analyze</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.load_data">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app_.load_data" title="Permalink to this definition"></a></dt>
+<dd><p>It loads the dataframe, the hashtags, the keywords from the Yake algorithm, and the keywords from the noun chunks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>df, kw_ht, kw_yake, kw_kbnc</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_emotion">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_emotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_emotion" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a dataframe, brand, stream, time_period, and weight, and returns a plotly figure of the emotion
+distribution for the given parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – The brand you want to analyze.</p></li>
+<li><p><strong>stream</strong> – ‘All’, ‘Twitter’, ‘Reddit’, ‘Facebook’, ‘Instagram’</p></li>
+<li><p><strong>time_period</strong> – ‘All Time’, ‘Last Year’, ‘Last Month’, ‘Last Week’</p></li>
+<li><p><strong>weight</strong> – ‘# Posts’ or ‘# Votes’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_sentiment">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_sentiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_sentiment" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a dataframe, brand, stream, time_period, and weight, and returns a pie chart of the sentiment
+distribution for the given brand, stream, and time_period</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – Brand name</p></li>
+<li><p><strong>stream</strong> – ‘All’, ‘Reddit’, ‘Twitter’, ‘Facebook’, ‘Instagram’, ‘Youtube’, ‘Forums’</p></li>
+<li><p><strong>time_period</strong> – The time period for which you want to see the data.</p></li>
+<li><p><strong>weight</strong> – # Posts or # Votes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_timeline">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_timeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_timeline" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a dataframe, brand, stream, time period, and weight, and returns a plotly figure of the timeline of the
+brand’s sentiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – the brand you want to look at</p></li>
+<li><p><strong>stream</strong> – the stream of data you want to look at (e.g. Twitter, Reddit, etc.)</p></li>
+<li><p><strong>time_period</strong> – The time period to look at.</p></li>
+<li><p><strong>weight</strong> – # Posts or # Votes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_topic_emotion">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_topic_emotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_topic_emotion" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a dataframe, a brand, a stream, a topic type, and a weight, and returns a plotly figure of the topic’s
+emotion distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe containing the data</p></li>
+<li><p><strong>brand</strong> – the brand you want to analyze</p></li>
+<li><p><strong>stream</strong> – ‘twitter’ or ‘instagram’</p></li>
+<li><p><strong>topic_type</strong> – ‘lda’ or ‘nmf’</p></li>
+<li><p><strong>weight</strong> – ‘tfidf’ or ‘count’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_topic_freq">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_topic_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_topic_freq" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a dataframe, a brand, a stream, a topic type, and a weight, and returns a plotly figure of the topic
+frequencies for that brand, stream, topic type, and weight</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – the brand you want to look at</p></li>
+<li><p><strong>stream</strong> – ‘all’, ‘twitter’, ‘facebook’, ‘instagram’</p></li>
+<li><p><strong>topic_type</strong> – ‘topic’ or ‘subtopic’</p></li>
+<li><p><strong>weight</strong> – ‘weight’ or ‘count’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A bar chart of the topic frequencies for the specified brand, stream, topic type, and weight.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_topic_sentiment">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_topic_sentiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_topic_sentiment" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a dataframe, a brand, a stream, a topic type, and a weight, and returns a plotly figure of the topic
+sentiment distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe containing the data</p></li>
+<li><p><strong>brand</strong> – the brand you want to analyze</p></li>
+<li><p><strong>stream</strong> – ‘twitter’ or ‘instagram’</p></li>
+<li><p><strong>topic_type</strong> – ‘lda’ or ‘nmf’</p></li>
+<li><p><strong>weight</strong> – ‘tfidf’ or ‘count’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A plotly figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.plot_wordcloud">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">plot_wordcloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.plot_wordcloud" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in the dataframe, brand, stream, time period, weight and ngram and returns a wordcloud plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – The dataframe that contains the data</p></li>
+<li><p><strong>brand</strong> – The brand you want to analyze.</p></li>
+<li><p><strong>stream</strong> – Twitter or Reddit</p></li>
+<li><p><strong>time_period</strong> – The time period for which you want to see the word cloud.</p></li>
+<li><p><strong>weight</strong> – The weighting of the word cloud. You can choose between the number of posts or the number of votes.</p></li>
+<li><p><strong>ngram</strong> – The number of words to consider in a phrase. For example, if ngram is 2, then the word cloud will consider</p></li>
+</ul>
+</dd>
+</dl>
+<p>2-word phrases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.prepare_geo_data">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">prepare_geo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feeling</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.prepare_geo_data" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in the dataframe, brand, time period, weight, detection, and feeling, and returns a dataframe with the
+latitude, longitude, and the frequency of the feeling</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe</p></li>
+<li><p><strong>brand</strong> – The brand you want to analyze.</p></li>
+<li><p><strong>time_period</strong> – The time period for which you want to see the data.</p></li>
+<li><p><strong>weight</strong> – # Posts or # Votes</p></li>
+<li><p><strong>detection</strong> – Sentiment or Emotion</p></li>
+<li><p><strong>feeling</strong> – ‘Positive’, ‘Negative’, ‘Neutral’, ‘Anger’, ‘Anticipation’, ‘Disgust’, ‘Fear’, ‘Joy’, ‘Sadness’,</p></li>
+</ul>
+</dd>
+</dl>
+<p>‘Surprise’, ‘Trust’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>lat: latitude of the location</p></li>
+<li><p>lon: longitude of the location</p></li>
+<li><p>sentiment: sentiment of the tweet</p></li>
+<li><p>posts: number of posts</p></li>
+<li><p>position: position of the tweet in the dataframe</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>A dataframe with the following columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.prepare_topic_data">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">prepare_topic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.prepare_topic_data" title="Permalink to this definition"></a></dt>
+<dd><p>It takes a dataframe, a brand, a stream, a topic type, and a weight, and returns a dataframe
+with the top 15 topics for that brand, stream, topic type, and weight</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe containing the data</p></li>
+<li><p><strong>brand</strong> – The brand you want to analyze.</p></li>
+<li><p><strong>stream</strong> – The stream you want to analyze.</p></li>
+<li><p><strong>topic_type</strong> – Hashtags, Broad Topics, or Keywords</p></li>
+<li><p><strong>weight</strong> – ‘# Posts’ or ‘# Votes’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dataframe with the top 15 topics for the given brand, stream, topic type, and weight.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.show_network">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">show_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kw_kbnc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.show_network" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a brand, stream, and a dictionary of keywords, and outputs a network graph of the keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>brand</strong> – the brand you want to look at</p></li>
+<li><p><strong>stream</strong> – ‘all’, ‘news’, ‘twitter’, ‘reddit’, ‘blogs’, ‘forums’, ‘reviews’, ‘image’, ‘video’</p></li>
+<li><p><strong>kw_kbnc</strong> – a dictionary of dictionaries, where the first key is the brand, the second key is the stream, and the</p></li>
+</ul>
+</dd>
+</dl>
+<p>value is a list of keywords.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app_.show_posts">
+<span class="sig-prename descclassname"><span class="pre">app_.</span></span><span class="sig-name descname"><span class="pre">show_posts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app_.show_posts" title="Permalink to this definition"></a></dt>
+<dd><p>It takes in a dataframe, a brand, a stream, a time period, and a dictionary of keywords, and returns a table of the
+most positive and negative comments for that brand, stream, and time period</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe containing the data</p></li>
+<li><p><strong>brand</strong> – the brand you want to look at</p></li>
+<li><p><strong>stream</strong> – the stream of data you want to look at (e.g. ‘twitter’, ‘reddit’, ‘news’)</p></li>
+<li><p><strong>time_period</strong> – the time period you want to look at.</p></li>
+<li><p><strong>kw</strong> – a dictionary of keywords for each brand and stream</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="streamlit_app" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="common.html" class="btn btn-neutral float-right" title="common module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Murali M K D, Chris Light, Hao Qiu, Pai Tong, Liyang Ru, Yen-Ju Tseng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
