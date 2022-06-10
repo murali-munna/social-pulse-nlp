@@ -104,6 +104,7 @@ A Brand Manager can ask and answer several questions like:
 
 ## Documentation
 
+To view Sphinx documentation, navigate to sphinx/_build/html and open index.html in a browser
 
 ---
 
