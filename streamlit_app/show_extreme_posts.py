@@ -26,43 +26,15 @@ negProbThresh = .95
 ########################################################################################################################
 
 def annotated_text(args, color=None):
-    """Writes text with annotations into your Streamlit app.
-
-    Parameters
-    ----------
-    *args : str, tuple or htbuilder.HtmlElement
-        Arguments can be:
-        - strings, to draw the string as-is on the screen.
-        - tuples of the form (main_text, annotation_text, background, color) where
-          background and foreground colors are optional and should be an CSS-valid string such as
-          "#aabbcc" or "rgb(10, 20, 30)"
-        - HtmlElement objects in case you want to customize the annotations further. In particular,
-          you can import the `annotation()` function from this module to easily produce annotations
-          whose CSS you can customize via keyword arguments.
-
-    Examples
-    --------
-
-    >>> annotated_text(
-    ...     "This ",
-    ...     ("is", "verb", "#8ef"),
-    ...     " some ",
-    ...     ("annotated", "adj", "#faa"),
-    ...     ("text", "noun", "#afa"),
-    ...     " for those of ",
-    ...     ("you", "pronoun", "#fea"),
-    ...     " who ",
-    ...     ("like", "verb", "#8ef"),
-    ...     " this sort of ",
-    ...     ("thing", "noun", "#afa"),
-    ... )
-
-    >>> annotated_text(
-    ...     "Hello ",
-    ...     annotation("world!", "noun", color="#8ef", border="1px dashed red"),
-    ... )
-
     """
+    > `annotated_text` takes a list of strings and a color and returns a string of HTML that displays the strings in a list
+    with the color of your choice
+
+    Args:
+      args: a list of strings, where each string is a word in the text
+      color: The color of the annotation.
+    """
+
     st.markdown(
         get_annotated_html(args, color),
         unsafe_allow_html=True,
@@ -99,43 +71,17 @@ OPACITIES = [
 ]
 
 def annotation(body, label="", background=None, color=None, **style):
-    """Build an HtmlElement span object with the given body and annotation label.
+    """
+    It takes a string, and returns a span element with a background color and a label
 
-    The end result will look something like this:
+    Args:
+      body: The text to be annotated.
+      label: The label to display in the annotation.
+      background: The background color of the annotation.
+      color: The color of the text.
 
-        [body | label]
-
-    Parameters
-    ----------
-    body : string
-        The string to put in the "body" part of the annotation.
-    label : string
-        The string to put in the "label" part of the annotation.
-    background : string or None
-        The color to use for the background "chip" containing this annotation.
-        If None, will use a random color based on the label.
-    color : string or None
-        The color to use for the body and label text.
-        If None, will use the document's default text color.
-    style : dict
-        Any CSS you want to apply to the containing "chip". This is useful for things like
-
-
-    Examples
-    --------
-
-    Produce a simple annotation with default colors:
-
-    >>> annotation("apple", "fruit")
-
-    Produce an annotation with custom colors:
-
-    >>> annotation("apple", "fruit", background="#FF0", color="black")
-
-    Produce an annotation with crazy CSS:
-
-    >>> annotation("apple", "fruit", background="#FF0", border="1px dashed red")
-
+    Returns:
+      A span element with a style attribute.
     """
 
     color_style = {}
@@ -180,17 +126,17 @@ def annotation(body, label="", background=None, color=None, **style):
 
 
 def get_annotated_html(args, color):
-    """Writes text with annotations into an HTML string.
-
-    Parameters
-    ----------
-    *args : see annotated_text()
-
-    Returns
-    -------
-    str
-        An HTML string.
     """
+    It takes a list of strings and HtmlElement objects, and returns a single HtmlElement object
+
+    Args:
+      args: a list of strings and tuples.
+      color: The color of the annotation.
+
+    Returns:
+      A string of html code.
+    """
+
 
     out = div()
 
@@ -215,6 +161,16 @@ def get_annotated_html(args, color):
 
 
 def postExtremeComments(data, keywords, color, extreme):
+    """
+    It takes in a dataframe, a list of keywords, and a color, and returns a list of lists of strings, where each list of
+    strings is a comment with the keywords highlighted
+
+    Args:
+      data: the dataframe containing the comments
+      keywords: a list of keywords to search for in the comments
+      color: The color of the text.
+      extreme: "positive" or "negative"
+    """
 
     with st.expander(f"Most {extreme} Comments", expanded=True):
         AAList = []
