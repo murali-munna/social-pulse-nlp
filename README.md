@@ -52,6 +52,7 @@ streamlit run streamlit_app/app.py
 ## User Story
 
 ![User Story](readme_imgs/user_story.png "User Story")
+
 A Brand Manager can ask and answer several questions like:
 - How is my brand's sentiment over a specific time period?
 - How is the user perception of the new features launched?
@@ -86,6 +87,8 @@ A Brand Manager can ask and answer several questions like:
 ### Keyword Analytics
 ![Keyword](readme_imgs/app_keyword.PNG "Keyword")
 
+![Network](readme_imgs/app_network.PNG "Network")
+
 ### Geo Analytics
 ![Geo](readme_imgs/app_geo.PNG "Geo")
 
@@ -94,10 +97,14 @@ A Brand Manager can ask and answer several questions like:
 
 
 ## Application Architecture
----
+![Architecture](readme_imgs/arch1.PNG "Architecture")
+
+![Architecture](readme_imgs/arch2.PNG "Architecture")
 
 
 ## Documentation
+
+
 ---
 
 
