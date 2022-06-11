@@ -836,7 +836,7 @@ def main():
             st.write(
                 """     
                 -   **Github**: [Social Pulse](https://github.com/murali-munna/social-pulse-nlp)
-                -   **Documentation**: 
+                -   **Documentation**: [Read the Docs](https://murali-munna.github.io/social-pulse-nlp/)
                 """
         )
             
