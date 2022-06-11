@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from Scraper.Praw_Wrapper import subredditScrape
+from scraper.Praw_Wrapper import subredditScrape
 import pytest
 
 def test_subredditScrape()->DataFrame:
