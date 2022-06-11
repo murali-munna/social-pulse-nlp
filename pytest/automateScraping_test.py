@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from Scraper.automateScraping import TwitterRoutine, RedditRoutine
+from scraper.automateScraping import TwitterRoutine, RedditRoutine
 import pandas as pd
 import pytest
 

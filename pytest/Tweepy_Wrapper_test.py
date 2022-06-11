@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from Scraper.Tweepy_Wrapper import tweetScrape
+from scraper.Tweepy_Wrapper import tweetScrape
 import pytest
 
 def test_tweetScrape()->DataFrame:
